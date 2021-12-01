@@ -720,6 +720,10 @@ function! s:ensure_init(buf, server_name, cb) abort
         let l:request.params['initializationOptions'] = l:server_info['initialization_options']
     endif
 
+    if has_key(l:server_info, 'before_init')
+        let l:request['params'] = l:server_info['before_init'](l:request['params'])
+    endif
+
     let l:server['init_callbacks'] = [a:cb]
 
     call s:send_request(a:server_name, l:request)
